@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <script type="text/javascript" src="js/jquery-3.1.1.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <link rel="stylesheet" href="themes/pict.min.css" />
+        <link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
+        <title>Pictionary</title>
+    </head>
+    <body>
+        <div class="app-v">
+            <div class="main-menu-screen screen show">
+                <div class="title">Pictionary</div>
+                <div class="content">
+                    <div id="new-game" class="ui-btn ui-corner-all new-game">New Game</div>
+                    <div class="ui-btn ui-corner-all continue-game">Continue Game</div>
+                    <div class="ui-btn ui-corner-all game-settings">Settings</div>
+                    <div class="ui-btn ui-corner-all howto-game">How to Play?</div>
+                </div>
+            </div>
+            <div class="teams-screen screen">
+                <div class="title">Teams</div>
+                <div class="content">
+                    <div class="team-label a">Team A Name: </div>
+                    <input type="text" id="team-a-name" class="team-name a" placeholder="Team A">
+                    <div class="team-label b">Team B Name: </div>
+                    <input type="text" id="team-b-name" class="team-name b" placeholder="Team B">
+                </div>
+                <div id="teams-coninue" class="ui-btn ui-corner-all button-coninue">Continue</div>
+            </div>
+            <div class="draw-card-screen screen">
+                <div class="title">Draw a card</div>
+                <div class="content">
+                    <div class="team">Team : </div> <div class="team-name"></div>
+                    <div class="category-name">Category : </div> <div class="category-name"></div>
+                </div>
+                <div id="draw-card-coninue" class="ui-btn ui-corner-all button-draw">Draw Card</div>
+            </div>
+            <div class="card-screen screen">
+                <div class="card">
+                    <div class="word"></div>
+                    <div class="category-name"></div>
+                </div>
+                <div class="buttons">
+                    <div id="card-skip" class="ui-btn ui-corner-all skip">skip</div> <div id="card-coninue" class="ui-btn ui-corner-all continue-game">Continue</div>
+                </div>
+            </div>
+            <div class="timer-screen screen">
+                <div class="timer">
+                    <div class="time"></div>
+                </div>
+                <div class="buttons">
+                    <div class="ui-btn ui-corner-all play-pause"></div> <div id="timer-coninue" class="ui-btn ui-corner-all continue-game">Done</div>
+                </div>
+            </div>
+            <div class="results-screen screen">
+                <div class="title">Results</div>
+                <div class="content">
+                    <div class="team-name a">Team A Name: </div>
+                    <div class="team-score a"></div>
+                    <div class="team-name b">Team A Name: </div>
+                    <div class="team-score b"></div>
+                </div>
+                <div id="results-coninue" class="ui-btn ui-corner-all button-coninue">Continue</div>
+            </div>
+            <div class="settings-screen screen">
+                <div class="title">Settings</div>
+                <div class="time-section">
+                    <label for="select-custom-1">Basic:</label>
+                    <select name="select-custom-1" id="select-custom-1" data-native-menu="false">
+                        <option value="60">1 min</option>
+                        <option value="90" selected>1.5 mim</option>
+                        <option value="120">2 min</option>
+                        <option value="150">2.5 min</option>
+                        <option value="180">3 min</option>
+                        <option value="210">4.5 mim</option>
+                        <option value="240">4 min</option>
+                        <option value="270">4.5 min</option>
+                        <option value="300">5 min</option>
+                    </select>
+                </div>
+                <div id="settings-accept" class="ui-btn ui-corner-all button-accept">Accept</div>
+            </div>
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/home.js"></script>
+        <script>
+            $(function () {
+                $(".new-game").click(function () {
+                    $(".main-menu-screen").removeClass("show");
+                    $(".teams-screen").addClass("show");
+                });
+
+                $("#teams-coninue").click(function () {
+                    $(".teams-screen").removeClass("show");
+                    $(".draw-card-screen").addClass("show");
+                });
+
+                $("#draw-card-coninue").click(function () {
+                    $(".draw-card-screen").removeClass("show");
+                    $(".card-screen").addClass("show");
+                });
+
+                $("#card-coninue").click(function () {
+                    $(".card-screen").removeClass("show");
+                    $(".timer-screen").addClass("show");
+                });
+
+                $("#card-skip").click(function () {
+                    $(".card-screen").removeClass("show");
+                    $(".card-screen").addClass("show");
+                });
+
+                $(".game-settings").click(function () {
+                    $(".main-menu-screen").removeClass("show");
+                    $(".settings-screen").addClass("show");
+                });
+
+                $("#settings-accept").click(function () {
+                    $(".settings-screen").removeClass("show");
+                    $(".main-menu-screen").addClass("show");
+                });
+
+                $("#settings-accept").click(function () {
+                    $(".settings-screen").removeClass("show");
+                    $(".main-menu-screen").addClass("show");
+                });
+
+            });
+        </script>
+    </body>
+</html>
